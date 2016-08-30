@@ -27,6 +27,7 @@ import java.util.Arrays;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import thontepu.naveen.patientmanager.Calculations.CalculateProbability;
 import thontepu.naveen.patientmanager.Database.PatientPojo;
 import thontepu.naveen.patientmanager.Database.PatientsDB;
 import thontepu.naveen.patientmanager.R;
@@ -163,7 +164,7 @@ public class PatientDetailsEdit extends AppCompatActivity implements CompoundBut
 
     private void savePatientData() {
         if (validFields()) {
-            probability = calculateProbability();
+            probability = CalculateProbability.getProbability(patientPojo);
             patientPojo.setProbability(probability);
             patientPojo.setTimeStamp(System.currentTimeMillis() + "");
             Utilities.printLog("patientPojo = " + (new Gson().toJson(patientPojo)));
@@ -183,23 +184,6 @@ public class PatientDetailsEdit extends AppCompatActivity implements CompoundBut
             }
             finish();
         }
-    }
-
-    private int calculateProbability() {
-        int proba = 0;
-        if (age <= 15) {
-            proba += 25;
-        }
-        if (genderRadioGroup.getCheckedRadioButtonId() == R.id.maleRadioButton) {
-            proba += 25;
-        }
-        if (migrainCheckBox.isChecked()) {
-            proba += 25;
-        }
-        if (drugsCheckBox.isChecked()) {
-            proba += 25;
-        }
-        return proba;
     }
 
     private boolean validFields() {
