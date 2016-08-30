@@ -24,9 +24,12 @@ import thontepu.naveen.patientmanager.Database.PatientsDB;
 import thontepu.naveen.patientmanager.R;
 import thontepu.naveen.patientmanager.RecyclerViewFiles.ItemClickInterface;
 import thontepu.naveen.patientmanager.RecyclerViewFiles.PatientsRecyclerViewAdapter;
+import thontepu.naveen.patientmanager.Retrofit.Sync.PostSyncApi.PostSyncController;
+import thontepu.naveen.patientmanager.Retrofit.Sync.PostSyncApi.PostSyncResponse;
+import thontepu.naveen.patientmanager.Retrofit.Sync.PostSyncApi.SendPostSyncResponse;
 import thontepu.naveen.patientmanager.Utils.Constants;
 
-public class PatientsView extends AppCompatActivity implements ItemClickInterface {
+public class PatientsView extends AppCompatActivity implements ItemClickInterface, SendPostSyncResponse {
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
@@ -58,6 +61,14 @@ public class PatientsView extends AppCompatActivity implements ItemClickInterfac
         patientsRecyclerViewAdapter = new PatientsRecyclerViewAdapter(this, this, data);
         patientList.setLayoutManager(new LinearLayoutManager(this));
         patientList.setAdapter(patientsRecyclerViewAdapter);
+        syncRecords();
+    }
+
+    private void syncRecords() {
+        if (patientsDB.getAllSyncingPatients().size() > 0) {
+            PostSyncController postSyncController = new PostSyncController(this, this);
+            postSyncController.postSyncApiCall();
+        }
     }
 
     @Override
@@ -121,5 +132,22 @@ public class PatientsView extends AppCompatActivity implements ItemClickInterfac
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+    @Override
+    public void sendPostSyncSuccess(PostSyncResponse postSyncResponse, String msg) {
+        if (postSyncResponse != null) {
+            if (postSyncResponse.getInfo().getStatus().equalsIgnoreCase("success")) {
+                List<PatientPojo> patientPojos = patientsDB.getAllSyncingPatients();
+                for (PatientPojo patientPojo : patientPojos) {
+                    if (Constants.Status.DELETE.equalsIgnoreCase(patientPojo.getStatus())) {
+                        patientsDB.deletePatient(patientPojo);
+                    } else {
+                        patientPojo.setStatus(Constants.Status.SYNCED);
+                        patientsDB.updatePatient(patientPojo);
+                    }
+                }
+            }
+        }
     }
 }

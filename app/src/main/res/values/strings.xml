@@ -15,4 +15,8 @@
     <string name="name">NAME</string>
     <string name="probTrans">probabilityTransition</string>
     <string name="profilePic">profilePic</string>
+    <string name="error">Error:</string>
+    <string name="ok">ok</string>
+    <string name="servererror">Unable to reach our servers.</string>
+    <string name="networkUnavailable">Check your internet connection</string>
 </resources>
