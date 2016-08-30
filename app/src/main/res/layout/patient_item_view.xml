@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="horizontal"
+    android:id="@+id/patientItem">
+    <ImageView
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:id="@+id/patientPic"
+        android:transitionName="profilePic"
+        android:src="@drawable/ic_account_circle_black_24dp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="asldfjlsdj"
+        android:layout_weight="1"
+        style="@style/itemViewTextView"
+        android:id="@+id/patientName"
+        android:transitionName="@string/name"
+        android:textSize="16sp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0%"
+        style="@style/itemViewTextView"
+        android:id="@+id/patientProbability"
+        android:transitionName="@string/probTrans"
+        android:textSize="20sp"/>
+</LinearLayout>
