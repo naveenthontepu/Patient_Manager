@@ -28,6 +28,7 @@ import thontepu.naveen.patientmanager.Retrofit.Sync.PostSyncApi.PostSyncControll
 import thontepu.naveen.patientmanager.Retrofit.Sync.PostSyncApi.PostSyncResponse;
 import thontepu.naveen.patientmanager.Retrofit.Sync.PostSyncApi.SendPostSyncResponse;
 import thontepu.naveen.patientmanager.Utils.Constants;
+import thontepu.naveen.patientmanager.Utils.Utilities;
 
 public class PatientsView extends AppCompatActivity implements ItemClickInterface, SendPostSyncResponse {
 
@@ -69,27 +70,6 @@ public class PatientsView extends AppCompatActivity implements ItemClickInterfac
             PostSyncController postSyncController = new PostSyncController(this, this);
             postSyncController.postSyncApiCall();
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_patients_view, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @OnClick(R.id.addNewPatient)
@@ -147,7 +127,11 @@ public class PatientsView extends AppCompatActivity implements ItemClickInterfac
                         patientsDB.updatePatient(patientPojo);
                     }
                 }
+            }else {
+                Utilities.showAlert(this,postSyncResponse.getInfo().getMessage());
             }
+        }else {
+            Utilities.showAlert(this,msg);
         }
     }
 }

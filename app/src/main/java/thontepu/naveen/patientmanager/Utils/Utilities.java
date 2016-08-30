@@ -103,6 +103,22 @@ public class Utilities {
             }
         }
     }
+    public static void showAlert(Context context,String msg){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setMessage(msg);
+        builder.setTitle("Alert");
+        builder.setCancelable(false);
+        builder.setPositiveButton(context.getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        if(!((Activity)context).isFinishing()) {
+            dialog.show();
+        }
+    }
 
 
 }

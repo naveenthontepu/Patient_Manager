@@ -14,7 +14,7 @@ public class RetrofitUtil {
     public static Retrofit retrofitBuilder() {
         Retrofit retrofit = new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl("")
+                .baseUrl("http://www.google.com")
                 .build();
         return retrofit;
     }

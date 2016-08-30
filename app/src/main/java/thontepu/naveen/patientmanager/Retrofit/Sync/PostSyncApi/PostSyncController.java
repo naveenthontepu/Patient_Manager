@@ -33,7 +33,7 @@ public class PostSyncController {
 
     public void postSyncApiCall(){
         if (Utilities.isNetworkAvailable(activity)) {
-            ProgressDialog progressDialog = Utilities.getProgressDialog(activity, "");
+            ProgressDialog progressDialog = Utilities.getProgressDialog(activity, "Please wait Syncing Records");
             Utilities.showProgressDialog(progressDialog);
             PostSyncBody postSyncBody = null;
             postSyncBody = buildpostSyncBody();
