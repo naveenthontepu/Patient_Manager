@@ -116,22 +116,29 @@ public class PatientsView extends AppCompatActivity implements ItemClickInterfac
 
     @Override
     public void sendPostSyncSuccess(PostSyncResponse postSyncResponse, String msg) {
+        // TODO: 8/31/16 have to remove the update records for any response as for showing kept it this way
         if (postSyncResponse != null) {
             if (postSyncResponse.getInfo().getStatus().equalsIgnoreCase("success")) {
-                List<PatientPojo> patientPojos = patientsDB.getAllSyncingPatients();
-                for (PatientPojo patientPojo : patientPojos) {
-                    if (Constants.Status.DELETE.equalsIgnoreCase(patientPojo.getStatus())) {
-                        patientsDB.deletePatient(patientPojo);
-                    } else {
-                        patientPojo.setStatus(Constants.Status.SYNCED);
-                        patientsDB.updatePatient(patientPojo);
-                    }
-                }
+                updateRecords();
             }else {
                 Utilities.showAlert(this,postSyncResponse.getInfo().getMessage());
+                updateRecords();
             }
         }else {
             Utilities.showAlert(this,msg);
+            updateRecords();
+        }
+    }
+
+    private void updateRecords() {
+        List<PatientPojo> patientPojos = patientsDB.getAllSyncingPatients();
+        for (PatientPojo patientPojo : patientPojos) {
+            if (Constants.Status.DELETE.equalsIgnoreCase(patientPojo.getStatus())) {
+                patientsDB.deletePatient(patientPojo);
+            } else {
+                patientPojo.setStatus(Constants.Status.SYNCED);
+                patientsDB.updatePatient(patientPojo);
+            }
         }
     }
 }
