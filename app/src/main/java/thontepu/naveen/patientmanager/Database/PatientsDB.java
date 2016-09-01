@@ -18,10 +18,10 @@ public class PatientsDB extends SQLiteOpenHelper {
 
     private static int DATABASE_VERSION=1;
     private static final String TAG = "com.rapido.passenger";
-    private static final String DATABASE_NAME = "Patients.db";
+    public static final String DATABASE_NAME = "Patients.db";
     private static final String TABLE_PATIENTS = "Patients";
-    private static final String COLUMN_NAME = "name";
-    private static final String COLUMN_ID = "_id";
+    public static final String COLUMN_NAME = "name";
+    public static final String COLUMN_ID = "_id";
     private static final String COLUMN_GENDER = "gender";
     private static final String COLUMN_AGE = "age";
     private static final String COLUMN_MIGRAIN = "migrain";
@@ -46,6 +46,7 @@ public class PatientsDB extends SQLiteOpenHelper {
      */
     @Override
     public void onCreate(SQLiteDatabase db) {
+        System.out.println("db on create");
         String query = "CREATE TABLE "+ TABLE_PATIENTS +"( "+
                 COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_NAME +" TEXT, "+
@@ -94,6 +95,22 @@ public class PatientsDB extends SQLiteOpenHelper {
         ContentValues v = getContentValue(patientPojo);
         SQLiteDatabase db = getReadableDatabase();
         db.delete(TABLE_PATIENTS,COLUMN_ID+"="+patientPojo.getId(),null);
+    }
+
+    public PatientPojo getPatient(String selection,String id){
+        SQLiteDatabase db = getReadableDatabase();
+//        Cursor c = db.query(TABLE_PATIENTS,null,selection+" =? ",new String[]{id},null,null,null);
+        Cursor c = db.query(true,TABLE_PATIENTS,null,selection+" =? ",new String[]{id},null,null,null,null);
+        Utilities.printLog("the size = "+c.getCount());
+        c.moveToFirst();
+        if (c.getCount()==0){
+            return null;
+        }
+        PatientPojo patientPojo = new PatientPojo();
+        patientPojo.setId(c.getInt(c.getColumnIndex(COLUMN_ID)));
+        patientPojo.setProbability(c.getInt(c.getColumnIndex(COLUMN_PROBABILITY)));
+        patientPojo.setName(c.getString(c.getColumnIndex(COLUMN_NAME)));
+        return patientPojo;
     }
 
     /**

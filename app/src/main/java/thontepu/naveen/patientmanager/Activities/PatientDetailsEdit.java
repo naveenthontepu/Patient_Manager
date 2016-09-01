@@ -186,7 +186,7 @@ public class PatientDetailsEdit extends AppCompatActivity implements CompoundBut
         }
     }
 
-    private boolean validFields() {
+    public boolean validFields() {
         if (!patientNameEt.getText().toString().equals("")) {
             patientPojo.setName(patientNameEt.getText().toString());
             if (!patientAgeEt.getText().toString().equals("")) {
