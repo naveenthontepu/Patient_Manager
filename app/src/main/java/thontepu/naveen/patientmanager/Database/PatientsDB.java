@@ -27,7 +27,7 @@ public class PatientsDB extends SQLiteOpenHelper {
     private static final String COLUMN_MIGRAIN = "migrain";
     private static final String COLUMN_DRUGS = "drugs";
     private static final String COLUMN_STATUS = "status";
-    private static final String COLUMN_PROBABILITY = "probability";
+    public static final String COLUMN_PROBABILITY = "probability";
     private static final String COLUMN_TIMESTAMP = "timeStamp";
 
     /**
@@ -129,6 +129,14 @@ public class PatientsDB extends SQLiteOpenHelper {
     public List<PatientPojo> getAllPatients(){
         return getPatientsList(Constants.Status.DELETE);
     }
+
+    public Cursor getAllPatientsCursor(){
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor c = db.query(TABLE_PATIENTS,null,COLUMN_STATUS+" != ?", new String[]{Constants.Status.DELETE},null,null,COLUMN_NAME+" COLLATE LOCALIZED ASC");
+        c.moveToFirst();
+        Utilities.printLog(Constants.Tags.ACTIVITY_STATE,"asdf the count = "+c.getCount());
+        return c;
+    }
     public List<PatientPojo> getAllSyncingPatients(){
         return getPatientsList(Constants.Status.SYNCED);
     }
@@ -138,6 +146,7 @@ public class PatientsDB extends SQLiteOpenHelper {
         PatientPojo temp;
         Cursor c = db.query(TABLE_PATIENTS,null,null,null,null,null,COLUMN_NAME+" COLLATE LOCALIZED ASC");
         c.moveToFirst();
+        Utilities.printLog(Constants.Tags.ACTIVITY_STATE,"the count = "+c.getCount());
         while (!c.isAfterLast()){
             temp = new PatientPojo(c.getInt(c.getColumnIndex(COLUMN_ID)),
                     c.getString(c.getColumnIndex(COLUMN_NAME)),

@@ -1,11 +1,16 @@
 package thontepu.naveen.patientmanager.Activities;
 
+import android.app.LoaderManager;
 import android.content.Intent;
+import android.content.Loader;
+import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
+import android.support.v4.widget.CursorAdapter;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,6 +28,7 @@ import thontepu.naveen.patientmanager.Database.PatientPojo;
 import thontepu.naveen.patientmanager.Database.PatientsDB;
 import thontepu.naveen.patientmanager.R;
 import thontepu.naveen.patientmanager.RecyclerViewFiles.ItemClickInterface;
+import thontepu.naveen.patientmanager.RecyclerViewFiles.PatientsCursorAdapter;
 import thontepu.naveen.patientmanager.RecyclerViewFiles.PatientsRecyclerViewAdapter;
 import thontepu.naveen.patientmanager.Retrofit.Sync.PostSyncApi.PostSyncController;
 import thontepu.naveen.patientmanager.Retrofit.Sync.PostSyncApi.PostSyncResponse;
@@ -41,6 +47,7 @@ public class PatientsView extends AppCompatActivity implements ItemClickInterfac
     List<PatientPojo> data;
     PatientsDB patientsDB;
     PatientsRecyclerViewAdapter patientsRecyclerViewAdapter;
+    PatientsCursorAdapter patientsCursorAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,10 +66,34 @@ public class PatientsView extends AppCompatActivity implements ItemClickInterfac
     private void initialize() {
         patientsDB = new PatientsDB(this, null, null);
         data = patientsDB.getAllPatients();
+        Cursor c = patientsDB.getAllPatientsCursor();
         patientsRecyclerViewAdapter = new PatientsRecyclerViewAdapter(this, this, data);
+        patientsCursorAdapter = new PatientsCursorAdapter(c,this,this);
         patientList.setLayoutManager(new LinearLayoutManager(this));
-        patientList.setAdapter(patientsRecyclerViewAdapter);
+        patientList.setAdapter(patientsCursorAdapter);
         syncRecords();
+//        loadManager();
+    }
+
+    private void loadManager() {
+        if (true){
+            getLoaderManager().initLoader(0, null, new LoaderManager.LoaderCallbacks<Cursor>() {
+                @Override
+                public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
+                    return null;
+                }
+
+                @Override
+                public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+
+                }
+
+                @Override
+                public void onLoaderReset(Loader<Cursor> loader) {
+
+                }
+            });
+        }
     }
 
     private void syncRecords() {
