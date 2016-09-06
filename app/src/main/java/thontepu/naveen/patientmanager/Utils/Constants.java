@@ -20,6 +20,10 @@ public class Constants {
 
     }
 
+    public static class Tags{
+        public static final String ACTIVITY_STATE = "activityState";
+    }
+
     public static class Status{
         public static final String NEW = "new";
         public static final String UPDATED = "updated";

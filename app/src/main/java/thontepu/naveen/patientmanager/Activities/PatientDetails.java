@@ -3,6 +3,8 @@ package thontepu.naveen.patientmanager.Activities;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.PersistableBundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.NavUtils;
 import android.support.v4.util.Pair;
@@ -49,6 +51,7 @@ public class PatientDetails extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Utilities.printLog(Constants.Tags.ACTIVITY_STATE,"onCreate");
         setContentView(R.layout.activity_patient_details);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
@@ -66,10 +69,42 @@ public class PatientDetails extends AppCompatActivity {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        Utilities.printLog(Constants.Tags.ACTIVITY_STATE,"onStart");
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Utilities.printLog(Constants.Tags.ACTIVITY_STATE,"onRestart");
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        Utilities.printLog(Constants.Tags.ACTIVITY_STATE,"onRestoreInstanceState");
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         populateViews();
+        Utilities.printLog(Constants.Tags.ACTIVITY_STATE,"onResume");
     }
+
+    @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        Utilities.printLog(Constants.Tags.ACTIVITY_STATE,"onPostCreate");
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        Utilities.printLog(Constants.Tags.ACTIVITY_STATE,"onPostResume");
+    }
+
 
     private void populateViews() {
         patientName.setText(patientPojo.getName());
@@ -135,12 +170,27 @@ public class PatientDetails extends AppCompatActivity {
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        Utilities.printLog(Constants.Tags.ACTIVITY_STATE,"onPause");
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Utilities.printLog(Constants.Tags.ACTIVITY_STATE,"onSaveInstanceState 1");
+    }
+
+    @Override
     protected void onStop() {
         super.onStop();
+        Utilities.printLog(Constants.Tags.ACTIVITY_STATE,"onStop");
+
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Utilities.printLog(Constants.Tags.ACTIVITY_STATE,"onDestroy");
     }
 }
